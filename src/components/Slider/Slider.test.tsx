@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, getByText, render, screen } from "@testing-library/react";
 import Slider from "./Slider";
 
 describe("Slider", () => {
@@ -21,6 +21,8 @@ describe("Slider", () => {
     screen.getByTestId("element").childNodes[3] as HTMLDivElement;
 
   beforeEach(setupComponent);
+
+  it("renders if slider component props is passed", () => {});
 
   it("renders recommendation", async () => {
     expect(screen.getByText(/2.54 - Recommended Pay/i)).toBeInTheDocument();

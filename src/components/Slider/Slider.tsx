@@ -2,18 +2,18 @@ import React, { ChangeEvent, useState, useEffect } from "react";
 import { PostPreviewProps } from "./types";
 import * as S from "./Slider.styled";
 
-// TODO: add tests 100% coverage ideally
-
 const Slider: React.FC<PostPreviewProps> = ({
   initialPrice = 1,
   onChange,
   max = 5,
-  min = 0.01, // TODO: use min prop and set 0.01 in App
+  min = 0.01,
   recommendedLimit = 0.14,
 }) => {
-  const [value, setValue] = useState<number[]>([0, (initialPrice / max) * 100]);
+  const initialPercentage = (initialPrice / max) * 100;
+
+  const [value, setValue] = useState<number[]>([0, initialPercentage]);
   const [inputValue, setInputValue] = useState<string>(
-    String(initialPrice + ".00")
+    String(initialPrice.toFixed(2))
   );
 
   const [, currentPercentage] = value;
@@ -21,12 +21,14 @@ const Slider: React.FC<PostPreviewProps> = ({
 
   const handleChange = (newValue: [number, number]) => {
     setValue(newValue);
+
     setInputValue(((newValue[1] * max) / 100).toFixed(2));
   };
 
   useEffect(() => {
     if (onChange) {
-      const currentPrice = (currentPercentage * max) / 100;
+      const currentPrice = (currentPercentage - max) / 100;
+
       onChange(currentPrice);
     }
   }, [currentPercentage, max, onChange]);
@@ -55,6 +57,7 @@ const Slider: React.FC<PostPreviewProps> = ({
       <S.Slider
         value={value}
         step={0.2}
+        min={min}
         $changeColor={isBelowRecommended}
         thumbsDisabled={[true, false]}
         rangeSlideDisabled={true}

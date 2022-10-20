@@ -69,7 +69,6 @@ export const Input = styled.input<{ $progress: number }>`
   padding: 4px 15px;
   text-align: center;
   font-size: 19px;
-
   transform: translateX(calc(-50% + 14px));
   font-family: "Merriweather", serif;
   font-weight: bold;
