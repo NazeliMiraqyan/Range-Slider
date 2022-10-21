@@ -4,7 +4,7 @@ import Theme from "./components/Slider/theme";
 
 const initialPrice = 1;
 const max = 5;
-const min = 0.1;
+const min = 1;
 const recommendedLimit = 0.14;
 
 const App: React.FC = () => {

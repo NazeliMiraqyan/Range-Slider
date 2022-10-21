@@ -1,8 +1,9 @@
-import { fireEvent, getByText, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Slider from "./Slider";
+import { PostPreviewProps } from "./types";
 
 describe("Slider", () => {
-  const setupComponent = () => {
+  const setupComponent = (props: PostPreviewProps = {}) => {
     return render(
       <Slider
         onChange={jest.fn()}
@@ -10,6 +11,7 @@ describe("Slider", () => {
         max={5}
         min={1}
         recommendedLimit={2.54}
+        {...props}
       />
     );
   };
@@ -22,7 +24,16 @@ describe("Slider", () => {
 
   beforeEach(setupComponent);
 
-  it("renders if slider component props is passed", () => {});
+  it("sets default prop values", () => {
+    setupComponent({
+      onChange: undefined,
+      initialPrice: undefined,
+      max: undefined,
+      min: undefined,
+      recommendedLimit: undefined,
+    });
+    expect(screen.getAllByTestId("element")[0]).toBeInTheDocument();
+  });
 
   it("renders recommendation", async () => {
     expect(screen.getByText(/2.54 - Recommended Pay/i)).toBeInTheDocument();
@@ -35,15 +46,16 @@ describe("Slider", () => {
     expect(getSliderInput()).toHaveValue("40.2");
   });
 
-  it("user change input value", async () => {
+  it("handles input change correctly", async () => {
     const input = screen.getByTestId("move-input") as HTMLInputElement;
     expect(input).toBeInTheDocument();
-
     fireEvent.change(input, {
-      target: { value: "" },
+      target: { value: "$2.45" },
     });
-
-    expect(input.value).toBe("$");
-    fireEvent.click(input);
+    expect(input.value).toBe("$2.45");
+    fireEvent.change(input, {
+      target: { value: "$asd" },
+    });
+    expect(input.value).toBe("$2.45");
   });
 });

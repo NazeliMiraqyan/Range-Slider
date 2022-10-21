@@ -1,10 +1,10 @@
-export type PostPreviewProps = {
-  initialPrice?: number;
-  max?: number;
-  min?: number;
-  recommendedLimit?: number;
-  onChange?: (value: number) => void;
-};
+export type PostPreviewProps = Partial<{
+  initialPrice: number;
+  max: number;
+  min: number;
+  recommendedLimit: number;
+  onChange: (value: number) => void;
+}>;
 
 export interface Itheme {
   colors: {

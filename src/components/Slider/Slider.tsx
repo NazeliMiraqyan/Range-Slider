@@ -6,7 +6,7 @@ const Slider: React.FC<PostPreviewProps> = ({
   initialPrice = 1,
   onChange,
   max = 5,
-  min = 0.01,
+  min = 0, // min doesn't work correctly
   recommendedLimit = 0.14,
 }) => {
   const initialPercentage = (initialPrice / max) * 100;
@@ -21,17 +21,16 @@ const Slider: React.FC<PostPreviewProps> = ({
 
   const handleChange = (newValue: [number, number]) => {
     setValue(newValue);
-
     setInputValue(((newValue[1] * max) / 100).toFixed(2));
   };
 
   useEffect(() => {
     if (onChange) {
-      const currentPrice = (currentPercentage - max) / 100;
-
-      onChange(currentPrice);
+      // onChange is not always calculated correctly
+      const currentPrice = (currentPercentage * max) / 100;
+      onChange(Math.max(currentPrice, min));
     }
-  }, [currentPercentage, max, onChange]);
+  }, [currentPercentage, max, min, onChange]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.slice(1);
@@ -48,6 +47,7 @@ const Slider: React.FC<PostPreviewProps> = ({
 
   return (
     <S.Wrapper>
+      {/* input placement is not handled correctly */}
       <S.Input
         value={`$${inputValue}`}
         onChange={handleInputChange}
